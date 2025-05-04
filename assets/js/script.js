@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const password = document.getElementById("user-password")?.value;
 
       try {
-        const res = await fetch("http://localhost:5000/api/auth/user/register", {
+        const res = await fetch("https://medinav-backend.onrender.com/api/auth/user/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, phone, password, role: "user" }),
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const password = document.getElementById("driver-password")?.value;
 
       try {
-        const res = await fetch("http://localhost:5000/api/auth/driver/register", {
+        const res = await fetch("https://medinav-backend.onrender.com/api/auth/driver/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, phone, vehicleNumber, password }),
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const role = email.includes("driver") ? "driver" : "user";
 
       try {
-        const res = await fetch("http://localhost:5000/api/auth/login", {
+        const res = await fetch("https://medinav-backend.onrender.com/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password, role }),
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const userEmail = prompt("Enter your email to confirm identity:");
         if (userEmail) {
           try {
-            const res = await fetch("http://localhost:5000/api/request/ambulance", {
+            const res = await fetch("https://medinav-backend.onrender.com/api/request/ambulance", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: userEmail, lat: latitude, lon: longitude }),
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const email = prompt("Enter your email to send location to server:");
         if (email) {
-          await fetch("http://localhost:5000/api/location/update", {
+          await fetch("https://medinav-backend.onrender.com/api/location/update", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, lat: latitude, lon: longitude }),
