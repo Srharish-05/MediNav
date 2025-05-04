@@ -12,5 +12,34 @@
     <div id="user-location-display"></div>
   </main>
   <script src="assets/js/script.js"></script>
+
+<h2>Karur Location Map</h2>
+<div id="map"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<style>
+  #map {
+    height: 400px;
+    width: 100%;
+    margin-top: 20px;
+  }
+</style>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const karurLat = 10.9601;
+  const karurLon = 78.0766;
+
+  const map = L.map('map').setView([karurLat, karurLon], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  L.marker([karurLat, karurLon]).addTo(map)
+    .bindPopup('Karur, Tamil Nadu')
+    .openPopup();
+</script>
+
 </body>
 </html>
