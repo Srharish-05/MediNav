@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #e0f2f1;
+    color: #333;
+  }
+  
+  header {
+    text-align: center;
+    padding: 20px;
+    background-color: #00796b;
+    color: white;
+  }
+  
+  .centered {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  input, button {
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+    width: 80%;
+  }
+  
+  button {
+    background-color: #00796b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #004d40;
+  }
+  
+  .role-options {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px 0;
+  }
+  
+  .role-btn {
+    padding: 15px 30px;
+    background-color: #00796b;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .role-btn:hover {
+    background-color: #004d40;
+  }
+  
