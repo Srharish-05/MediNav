@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard - MediNav</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container nav-flex">
+            <a href="index.html" class="logo">MediNav</a>
+            <div>
+                <span id="driverName" style="margin-right: 1rem; font-weight: 600;">Driver</span>
+                <button onclick="MediNav.logout()" class="btn btn-secondary"
+                    style="padding: 0.5rem 1rem;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 2rem;">
+        <div class="dashboard-grid">
+            <!-- Sidebar / Requests -->
+            <div class="glass-card fade-in-up">
+                <h2 style="margin-bottom: 1rem;">Pending Requests</h2>
+                <div id="requestsList">
+                    <p style="color: var(--text-light);">Checking for requests...</p>
+                </div>
+
+                <div id="activeJob"
+                    style="display: none; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+                    <h3>Active Job</h3>
+                    <p>Navigating to User...</p>
+                    <button id="updateLocBtn" class="btn" style="width: 100%; margin-top: 1rem;">Send Live
+                        Update</button>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="glass-card fade-in-up" style="padding: 0; overflow: hidden;">
+                <div id="map" class="map-container" style="height: 500px;"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        // Auth Check
+        const driver = MediNav.getCurrentUser();
+        if (!driver || driver.role !== 'driver') window.location.href = 'driver_login.html';
+        document.getElementById('driverName').textContent = driver.name;
+
+        let map, driverMarker, userMarker, routeLine;
+
+        async function initDashboard() {
+            // Driver's starting location (simulated)
+            const lat = driver.lat || 12.9716;
+            const lng = driver.lng || 77.5946;
+
+            map = MediNav.initMap('map', lat, lng);
+
+            driverMarker = L.marker([lat, lng], {
+                icon: L.icon({
+                    iconUrl: 'https://cdn-icons-png.flaticon.com/512/2636/2636282.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                })
+            }).addTo(map).bindPopup('You (Ambulance)');
+
+            await checkForRequests();
+        }
+
+        async function checkForRequests() {
+            const requests = await MediNav.getRequests();
+            const pendingRequests = requests.filter(r => r.status === 'Pending');
+            const list = document.getElementById('requestsList');
+
+            if (pendingRequests.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-light);">No pending requests.</p>';
+                return;
+            }
+
+            list.innerHTML = '';
+            pendingRequests.forEach(req => {
+                const item = document.createElement('div');
+                item.className = 'glass-card';
+                item.style.padding = '1rem';
+                item.style.marginBottom = '1rem';
+                item.style.cursor = 'pointer';
+                item.innerHTML = `
+                    <h4>Emergency Request</h4>
+                    <p>Distance: ~2.5 km</p>
+                    <button class="btn" style="margin-top: 0.5rem; font-size: 0.9rem;">Accept Request</button>
+                `;
+
+                // Accept Logic
+                item.querySelector('button').addEventListener('click', () => {
+                    acceptRequest(req);
+                });
+
+                list.appendChild(item);
+            });
+
+            Animations.animateStagger('#requestsList > div');
+        }
+
+        async function acceptRequest(req) {
+            await MediNav.updateRequest(req.id, 'Accepted', driver.id);
+            document.getElementById('requestsList').innerHTML = '<p style="color: green;">Request Accepted!</p>';
+            document.getElementById('activeJob').style.display = 'block';
+
+            // Show User on Map
+            userMarker = L.marker([req.userLat, req.userLng]).addTo(map).bindPopup('Patient Location').openPopup();
+
+            // Draw Line
+            const driverPos = driverMarker.getLatLng();
+            routeLine = L.polyline([driverPos, [req.userLat, req.userLng]], { color: 'blue' }).addTo(map);
+            map.fitBounds(routeLine.getBounds(), { padding: [50, 50] });
+
+            // Simulate Movement Button
+            document.getElementById('updateLocBtn').addEventListener('click', () => {
+                const currentLatLng = driverMarker.getLatLng();
+                const targetLatLng = L.latLng(req.userLat, req.userLng);
+
+                // Move 10% closer
+                const newLat = currentLatLng.lat + (targetLatLng.lat - currentLatLng.lat) * 0.1;
+                const newLng = currentLatLng.lng + (targetLatLng.lng - currentLatLng.lng) * 0.1;
+
+                driverMarker.setLatLng([newLat, newLng]);
+
+                // Update line
+                routeLine.setLatLngs([driverMarker.getLatLng(), targetLatLng]);
+
+                alert('Location updated sent to server');
+            });
+        }
+
+        initDashboard();
+    </script>
+</body>
+
+</html>

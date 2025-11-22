@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Register - MediNav</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container nav-flex">
+            <a href="index.html" class="logo">MediNav</a>
+        </div>
+    </header>
+
+    <main class="center-screen">
+        <div class="glass-card auth-container fade-in-up">
+            <h2 style="text-align: center; margin-bottom: 1.5rem;">Driver Registration</h2>
+            <form id="driverRegisterForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" id="phone" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vehicle Number</label>
+                    <input type="text" id="vehicle" class="form-input" placeholder="KA-01-AB-1234" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Register as Driver</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem;">
+                Already have an account? <a href="driver_login.html">Login</a>
+                <!DOCTYPE html>
+                <html lang="en">
+
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Driver Register - MediNav</title>
+                    <link rel="stylesheet" href="css/style.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+                </head>
+
+                <body>
+                    <header>
+                        <div class="container nav-flex">
+                            <a href="index.html" class="logo">MediNav</a>
+                        </div>
+                    </header>
+
+                    <main class="center-screen">
+                        <div class="glass-card auth-container fade-in-up">
+                            <h2 style="text-align: center; margin-bottom: 1.5rem;">Driver Registration</h2>
+                            <form id="driverRegisterForm">
+                                <div class="form-group">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" id="name" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" id="email" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" id="phone" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Vehicle Number</label>
+                                    <input type="text" id="vehicle" class="form-input" placeholder="KA-01-AB-1234"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" id="password" class="form-input" required>
+                                </div>
+                                <button type="submit" class="btn" style="width: 100%;">Register as Driver</button>
+                            </form>
+                            <p style="text-align: center; margin-top: 1rem;">
+                                Already have an account? <a href="driver_login.html">Login</a>
+                            </p>
+                        </div>
+                    </main>
+
+                    <script src="js/script.js"></script>
+                    <script src="js/animations.js"></script>
+                    <script>
+                        document.getElementById('driverRegisterForm').addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            const name = document.getElementById('name').value;
+                            const email = document.getElementById('email').value;
+                            const phone = document.getElementById('phone').value;
+                            const vehicle = document.getElementById('vehicle').value;
+                            const password = document.getElementById('password').value;
+
+                            if (await MediNav.registerDriver(name, email, phone, password, vehicle)) {
+                                window.location.href = 'driver_dashboard.html';
+                            }
+                        });
+                    </script>
+                </body>
+
+                </html>
